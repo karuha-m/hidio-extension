@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "Hidio — Instant Homework Answers",
+  "short_name": "Hidio",
+  "version": "0.1.0",
+  "description": "Double-click any question to get the answer in seconds — copied silently, in a tiny dot, or step by step in the side panel.",
+  "icons": {
+    "16": "icon-16.png",
+    "32": "icon-32.png",
+    "48": "icon-48.png",
+    "128": "icon-128.png"
+  },
+  "action": {
+    "default_title": "Hidio",
+    "default_icon": { "16": "icon-16.png", "32": "icon-32.png" }
+  },
+  "side_panel": { "default_path": "panel.html" },
+  "background": { "service_worker": "background.js" },
+  "permissions": ["storage", "sidePanel", "offscreen", "clipboardWrite"],
+  "host_permissions": ["<all_urls>"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["md.js", "content.js"],
+      "all_frames": true,
+      "run_at": "document_idle"
+    }
+  ],
+  "commands": {
+    "solve": {
+      "suggested_key": { "default": "Alt+Shift+S" },
+      "description": "Answer the question on screen"
+    },
+    "cycle-mode": {
+      "suggested_key": { "default": "Alt+Shift+M" },
+      "description": "Switch answer mode"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="panel.css">
+</head>
+<body>
+<header><img src="icon-32.png" alt=""><b>Hidio</b><span id="plan" class="plan"></span></header>
+
+<section id="login" hidden>
+  <h2>Sign in</h2>
+  <p class="muted">We'll email you a 6-digit code. New accounts get 5 free answers.</p>
+  <form id="emailForm"><input id="email" type="email" placeholder="you@school.edu" required><button type="submit">Email me a code</button></form>
+  <form id="codeForm" hidden><p class="muted">Code sent to <b id="sentTo"></b></p><input id="code" inputmode="numeric" maxlength="6" placeholder="123456" required><button type="submit">Sign in</button></form>
+  <p class="err" id="loginErr"></p>
+</section>
+
+<section id="main" hidden>
+  <div class="modes" id="modes">
+    <button type="button" data-mode="dot">Dot</button><button type="button" data-mode="clipboard">Clipboard</button><button type="button" data-mode="panel">Side panel</button>
+  </div>
+  <p class="muted small" id="modeHint"></p>
+  <button type="button" id="solveBtn" class="primary">Answer this page</button>
+  <p class="muted small">Double-click a question, or press <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd>. <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd> switches mode.</p>
+  <div id="answer" class="answer" hidden></div>
+  <button type="button" id="upgrade" class="primary" hidden>Unlock unlimited answers</button>
+  <details id="historyBox"><summary>Recent answers</summary><div id="history"></div></details>
+  <footer>
+    <label><input type="checkbox" id="dblclick"> Double-click to answer</label>
+    <button type="button" class="link" id="shortcuts">Change shortcuts</button> · <button type="button" class="link" id="account">Account</button> · <button type="button" class="link" id="signout">Sign out</button>
+  </footer>
+</section>
+<script src="md.js"></script>
+<script src="panel.js"></script>
+</body>
+</html>
