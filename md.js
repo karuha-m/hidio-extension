@@ -56,5 +56,19 @@
     return text;
   }
 
-  globalThis.HidioMD = { render, shortAnswer };
+  /** Pulls a lone leading "**Answer:** …" out of the reply so it can be shown on its own; null when there isn't one. */
+  function split(md) {
+    if ((md.match(/\*\*Answer:\*\*/gi) || []).length !== 1 || !/^\s*\*\*Answer:\*\*/i.test(md)) return null;
+    const after = md.replace(/^\s*\*\*Answer:\*\*[ \t]*/i, '');
+    let end = after.length;
+    const fence = /^\s*```/.test(after) ? after.indexOf('```', after.indexOf('```') + 3) : -1;
+    if (fence >= 0) end = fence + 3;
+    else if (!/^\s*```/.test(after)) {
+      const stop = /\n\s*\n|\*\*Why/i.exec(after);
+      if (stop) end = stop.index;
+    }
+    return { answer: after.slice(0, end).trim(), rest: after.slice(end).trim() };
+  }
+
+  globalThis.HidioMD = { render, shortAnswer, split };
 })();

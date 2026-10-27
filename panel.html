@@ -2,34 +2,153 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hidio</title>
 <link rel="stylesheet" href="panel.css">
 </head>
 <body>
-<header><img src="icon-32.png" alt=""><b>Hidio</b><span id="plan" class="plan"></span></header>
+<header class="top">
+  <button type="button" class="brand" data-go="home" aria-label="Hidio home"><img src="icon-32.png" alt=""><span>hidio</span></button>
+  <span id="plan" class="plan" hidden></span>
+  <nav class="tools" id="tools" hidden>
+    <button type="button" class="icon" data-go="history" aria-label="Recent answers" title="Recent answers">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1"/><path d="M3.5 4.5v4h4"/><path d="M12 7.5V12l3 2"/></svg>
+    </button>
+    <button type="button" class="icon" data-go="settings" aria-label="Settings" title="Settings">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg>
+    </button>
+  </nav>
+</header>
 
-<section id="login" hidden>
-  <h2>Sign in</h2>
-  <p class="muted">We'll email you a 6-digit code. New accounts get 5 free answers.</p>
-  <form id="emailForm"><input id="email" type="email" placeholder="you@school.edu" required><button type="submit">Email me a code</button></form>
-  <form id="codeForm" hidden><p class="muted">Code sent to <b id="sentTo"></b></p><input id="code" inputmode="numeric" maxlength="6" placeholder="123456" required><button type="submit">Sign in</button></form>
-  <p class="err" id="loginErr"></p>
-</section>
-
-<section id="main" hidden>
-  <div class="modes" id="modes">
-    <button type="button" data-mode="dot">Dot</button><button type="button" data-mode="clipboard">Clipboard</button><button type="button" data-mode="panel">Side panel</button>
+<!-- sign in -->
+<section class="view" id="v-login" hidden>
+  <div class="hello">
+    <h1>Answers in seconds,<br><span class="hl">only you see them.</span></h1>
+    <p class="muted">Sign in with your email to get <b>5 free answers</b>. No card, no password.</p>
   </div>
-  <p class="muted small" id="modeHint"></p>
-  <button type="button" id="solveBtn" class="primary">Answer this page</button>
-  <p class="muted small">Double-click a question, or press <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd>. <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd> switches mode.</p>
-  <div id="answer" class="answer" hidden></div>
-  <button type="button" id="upgrade" class="primary" hidden>Unlock unlimited answers</button>
-  <details id="historyBox"><summary>Recent answers</summary><div id="history"></div></details>
-  <footer>
-    <label><input type="checkbox" id="dblclick"> Double-click to answer</label>
-    <button type="button" class="link" id="shortcuts">Change shortcuts</button> · <button type="button" class="link" id="account">Account</button> · <button type="button" class="link" id="signout">Sign out</button>
-  </footer>
+  <form id="emailForm" class="stack" novalidate>
+    <label class="field"><span>Email</span><input id="email" type="email" autocomplete="email" placeholder="you@school.edu" required></label>
+    <button type="submit" class="btn">Email me a code</button>
+  </form>
+  <form id="codeForm" class="stack" hidden novalidate>
+    <p class="sent">We sent a 6-digit code to <b id="sentTo"></b></p>
+    <div class="otp" id="otp">
+      <input inputmode="numeric" autocomplete="one-time-code" maxlength="6" aria-label="Digit 1"><input inputmode="numeric" maxlength="1" aria-label="Digit 2"><input inputmode="numeric" maxlength="1" aria-label="Digit 3"><input inputmode="numeric" maxlength="1" aria-label="Digit 4"><input inputmode="numeric" maxlength="1" aria-label="Digit 5"><input inputmode="numeric" maxlength="1" aria-label="Digit 6">
+    </div>
+    <button type="submit" class="btn">Sign in</button>
+    <p class="row-links"><button type="button" class="link" id="resend" disabled>Resend code</button><button type="button" class="link" id="changeEmail">Use a different email</button></p>
+  </form>
+  <p class="err" id="loginErr" role="alert"></p>
+  <p class="fine">Already signed in on hidio.app? <button type="button" class="link" data-open="/app/?from=ext">Open it</button> and this panel signs in by itself.</p>
 </section>
+
+<!-- answer -->
+<section class="view" id="v-home" hidden>
+  <div class="modes" id="modes">
+    <i class="thumb" aria-hidden="true"></i>
+    <button type="button" data-mode="dot">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><circle cx="16.5" cy="15.5" r="1.6" class="fill"/></svg>Dot</button>
+    <button type="button" data-mode="clipboard">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="5.5" y="4.5" width="13" height="16" rx="2.5"/><path d="M9.5 4.5v-1h5v1M9 10h6M9 14h4"/></svg>Clipboard</button>
+    <button type="button" data-mode="panel">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M14 4.5v15"/></svg>Side panel</button>
+  </div>
+  <p class="mode-hint" id="modeHint"></p>
+
+  <div class="actions">
+    <button type="button" class="btn" id="solveBtn"><span>Answer this page</span><kbd class="keys" data-cmd="solve"></kbd></button>
+    <button type="button" class="btn ghost" id="snipBtn"><span>Select a question</span><kbd class="keys" data-cmd="snip"></kbd></button>
+  </div>
+
+  <div id="empty" class="empty">
+    <p class="note">three ways to ask</p>
+    <ul>
+      <li><b>Double-click</b> a question on the page.</li>
+      <li><b>Drag a box</b> around it: <i>Select a question</i> above<span class="or-keys"> or <span class="keys inline" data-cmd="snip"></span></span>.</li>
+      <li><b>Highlight</b> text, then right-click → <i>Answer with Hidio</i>.</li>
+    </ul>
+  </div>
+
+  <article id="card" class="card" hidden>
+    <div class="card-top">
+      <span class="src" id="src"></span>
+      <button type="button" class="shot" id="shotBtn" hidden aria-label="Show what Hidio read"><img id="thumb" alt=""></button>
+    </div>
+    <div id="body" class="body"></div>
+    <div id="cardActions" class="card-actions" hidden>
+      <button type="button" class="chip" id="copyAnswer"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5v-2a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg>Copy answer</button>
+      <button type="button" class="chip" id="copyAll">Copy all</button>
+      <button type="button" class="chip" id="again"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4.5v4h-4"/></svg>Try again</button>
+    </div>
+    <div id="turns" class="turns"></div>
+    <form id="askForm" class="ask" hidden>
+      <input id="ask" autocomplete="off" placeholder="Ask about this answer…" maxlength="600">
+      <button type="submit" aria-label="Send"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
+    </form>
+  </article>
+
+  <div id="quota" class="quota" hidden>
+    <div class="pips" id="pips"><i></i><i></i><i></i><i></i><i></i></div>
+    <p><span id="quotaText"></span><button type="button" class="link strong" data-open="/app/?plans=1">Go unlimited</button></p>
+  </div>
+
+  <aside id="paywall" class="paywall" hidden>
+    <h2>Keep going with <span class="hl">unlimited answers</span></h2>
+    <p>Up to 400 answers a day, every mode, Chrome and Windows.</p>
+    <div class="prices"><span><b>$7.99</b>/week</span><span><b>$19.99</b>/month</span></div>
+    <button type="button" class="btn" data-open="/app/?plans=1">Choose a plan</button>
+    <p class="fine">Cancel anytime from your account.</p>
+  </aside>
+</section>
+
+<!-- history -->
+<section class="view" id="v-history" hidden>
+  <div class="view-head"><button type="button" class="back" data-go="home" aria-label="Back"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><h2>Recent answers</h2><button type="button" class="link" id="clearHistory">Clear</button></div>
+  <div id="history" class="history"></div>
+  <p id="historyEmpty" class="muted center" hidden>Answers you get show up here.</p>
+</section>
+
+<!-- settings -->
+<section class="view" id="v-settings" hidden>
+  <div class="view-head"><button type="button" class="back" data-go="home" aria-label="Back"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><h2>Settings</h2></div>
+
+  <div class="group">
+    <label class="toggle"><span><b>Double-click to answer</b><small>Double-clicking a question answers it.</small></span><input type="checkbox" id="dblclick"><i></i></label>
+    <label class="toggle" id="siteRow" hidden><span><b>On <em id="siteName"></em></b><small>Turn off to ignore double-clicks on this site only.</small></span><input type="checkbox" id="siteOn"><i></i></label>
+  </div>
+
+  <div class="group">
+    <h3>The dot</h3>
+    <div class="dotset">
+      <div class="corners" id="corners">
+        <button type="button" data-corner="tl" aria-label="Top left"></button>
+        <button type="button" data-corner="tr" aria-label="Top right"></button>
+        <button type="button" data-corner="bl" aria-label="Bottom left"></button>
+        <button type="button" data-corner="br" aria-label="Bottom right"></button>
+        <i id="previewDot"></i>
+      </div>
+      <div class="sliders">
+        <label class="slider"><span>Size <output id="dotSizeOut"></output></span><input type="range" id="dotSize" min="1" max="48" step="1"></label>
+        <label class="slider"><span>Visibility <output id="dotOpacityOut"></output></span><input type="range" id="dotOpacity" min="0" max="100" step="1"></label>
+      </div>
+    </div>
+    <p class="fine">At 0% the dot is invisible but still there — hover its corner to read the answer.</p>
+  </div>
+
+  <div class="group">
+    <h3>Shortcuts</h3>
+    <dl class="shortcuts" id="shortcutList"></dl>
+    <button type="button" class="link" id="shortcuts">Change shortcuts</button>
+  </div>
+
+  <div class="group">
+    <h3>Account</h3>
+    <p class="acct"><span id="acctEmail"></span><span id="acctPlan" class="muted"></span></p>
+    <p class="row-links"><button type="button" class="link" data-open="/app/">Manage plan</button><a class="link" href="mailto:support@hidio.app">Help</a><button type="button" class="link" id="signout">Sign out</button></p>
+  </div>
+  <p class="fine center" id="version"></p>
+</section>
+
 <script src="md.js"></script>
 <script src="panel.js"></script>
 </body>

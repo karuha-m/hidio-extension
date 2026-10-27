@@ -8,9 +8,11 @@ Website: [hidio.app](https://hidio.app) · Web version (paste a screenshot, work
 
 ## What you get
 
-- **Answers in seconds.** Multiple choice, short answer, math, code, essays. Select or double-click the question, and the answer appears.
+- **Answers in seconds.** Multiple choice, short answer, math, code, essays. Double-click the question, drag a box around it, or right-click highlighted text, and the answer appears.
+- **Ask a follow-up.** Not sure why? Ask right under the answer, or have it answered again.
 - **Three ways to read the answer.** Clipboard (nothing on screen, just paste), a faint dot in the corner you hover to reveal, or the full side panel with every step. Switch with `Alt+Shift+M`.
-- **Nothing on the page itself.** Clipboard mode draws nothing at all. The side panel lives outside the web page, so it isn't part of a shared tab.
+- **Nothing on the page itself.** Clipboard mode draws nothing at all. The side panel lives outside the web page, so it isn't part of a shared tab. A ✓ on the toolbar icon tells you the answer is ready.
+- **Yours to adjust.** Move the dot to any corner, change its size and visibility, turn double-click off on sites where you don't want it, and look back at recent answers.
 - **Works where your coursework is.** Canvas, Blackboard, Moodle, McGraw Hill Connect, Pearson MyLab, Google Forms, Quizlet, Khan Academy and any other site.
 - **5 free answers** to start, then $7.99/week or $19.99/month for unlimited. Cancel anytime.
 
@@ -30,8 +32,8 @@ Works in Chrome, Edge, Brave, Arc and any other Chromium browser on Windows, Mac
 ## Using it
 
 1. Click the Hidio icon and sign in with your email (a 6-digit code, no password).
-2. Open your assignment and **double-click a question**, or select the text and press `Alt+Shift+S`.
-3. Read the answer the way you like: hover the dot in the bottom-right corner, paste from your clipboard, or open the side panel for the full explanation.
+2. Open your assignment and **double-click a question**, or press `Alt+Shift+S`. To pick one question out of a busy page, press `Alt+Shift+Q` and drag a box around it. You can also highlight text and right-click → **Answer with Hidio**.
+3. Read the answer the way you like: hover the dot in the corner, paste from your clipboard when the icon shows ✓, or open the side panel for the full explanation and follow-up questions.
 
 ![The faint dot in the corner of a quiz page](docs/dot.webp)
 
